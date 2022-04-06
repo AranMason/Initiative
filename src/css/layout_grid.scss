@@ -1,0 +1,28 @@
+$base-size: 5px;
+
+$size-list: (
+  xs: 1px,
+  s: 2px,
+  m: $base-size,
+  ml: 2 * $base-size,
+  l: 3 * $base-size,
+  xl: 4 * $base-size
+);
+
+@each $name, $size in $size-list {
+  .gap-#{$name} {
+    margin-bottom: $size;
+  }
+
+  .gap-pre-#{$name} {
+    margin-top: $size;
+  }
+
+  .space-#{$name} {
+    margin-right: $size;
+  }
+
+  .space-pre-#{$name} {
+    margin-left: $size;
+  }
+}
