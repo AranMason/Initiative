@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import InitiativeItem from '../models/InitiativeItem';
 
-const baseURL = 'localhost:3000';
-
 interface APIDataModel {
   current?: string;
   track: InitiativeItem[];
@@ -13,9 +11,6 @@ interface ItemListenerProps<T> {
 }
 
 const ItemListener: React.FC<ItemListenerProps<APIDataModel>> = ({ children }) => {
-  // const [data, setData] = useState<InitiativeItem[]>([]);
-  // const [isListening, setIsListening] = useState(false);
-
   const [data, setData] = useState<APIDataModel>({
     track: [],
   });
@@ -23,7 +18,7 @@ const ItemListener: React.FC<ItemListenerProps<APIDataModel>> = ({ children }) =
 
   useEffect(() => {
     if (!isListening) {
-      const events = new EventSource('http://localhost:3000/api/initiative/listener');
+      const events = new EventSource('/api/initiative/listener');
 
       events.onmessage = event => {
         console.log(event.data);

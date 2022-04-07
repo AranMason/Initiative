@@ -37,10 +37,10 @@ const TrackerContainer: React.FC = () => {
       >
         Next
       </button>
-      <button type="button" onClick={() => sort()}>
+      <button type="button" placeholder="Name" onClick={() => sort()}>
         Sort
       </button>
-      <button type="button" onClick={() => clear()}>
+      <button type="button" placeholder="Initiative" onClick={() => clear()}>
         Clear
       </button>
     </React.Fragment>

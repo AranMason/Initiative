@@ -16,7 +16,9 @@
     "typescript": "^3.9.10"
   },
   "scripts": {
-    "build": "webpack --env=development --watch",
+    "build": "webpack --env=production",
+    "watch": "webpack --env=development --watch",
+    "share": "lt --port 3000",
     "eject": "reactnpm run -scripts eject",
     "lint": "eslint src/**"
   },
@@ -58,6 +60,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "localtunnel": "^2.0.2",
     "prettier": "^1.19.1",
     "sass": "^1.49.11",
     "sass-loader": "^12.6.0",

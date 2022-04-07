@@ -1,5 +1,5 @@
 
-const baseURL = "http://localhost:3000";
+const baseURL = "/api/initiative";
 
 type AddItemData = {
   name: string,
@@ -19,7 +19,7 @@ const useInitiativeTracker = (): InitiativeTrackerControls => {
   const addItem = async ({name, value}: AddItemData) => {
     if (!name || !value) return;
 
-    await  fetch(`${baseURL}/api/initiative/item`, {
+    await  fetch(`${baseURL}/`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const useInitiativeTracker = (): InitiativeTrackerControls => {
   const removeItem = async (id: string) => {
     if (!id) return;
 
-    await  fetch(`${baseURL}/api/initiative/item`, {
+    await  fetch(`${baseURL}/`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -46,20 +46,20 @@ const useInitiativeTracker = (): InitiativeTrackerControls => {
   }
 
   const nextTurn = async () => {
-    await fetch(`${baseURL}/api/initiative/next`, {
+    await fetch(`${baseURL}/next`, {
       method: "PATCH"
     })
   }
 
 
   const sort = async () => {
-    await fetch(`${baseURL}/api/initiative/sort`, {
+    await fetch(`${baseURL}/sort`, {
       method: "post"
     })
   }
 
   const clear = async () => {
-    await fetch(`${baseURL}/api/initiative/clear`, {
+    await fetch(`${baseURL}/clear`, {
       method: "DELETE"
     })
   }

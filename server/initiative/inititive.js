@@ -128,9 +128,9 @@ async function clear(request, response, next) {
 
 router.get('/listener', eventsHandler);
 
-router.post('/item', addItem);
+router.post('/', addItem);
 
-router.delete('/item', removeItem);
+router.delete('/', removeItem);
 
 router.patch('/next', nextTurn);
 
