@@ -1,5 +1,6 @@
 # TODO
 
+- Setup Cookie Keys
 - Refresh
 
 # Extention

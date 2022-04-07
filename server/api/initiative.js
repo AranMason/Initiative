@@ -28,12 +28,14 @@ function eventsHandler(request, response, next) {
 
   response.write(data);
 
-  const clientId = uuidv4();
+  const clientId = request.session?.id || uuidv4();
 
   const newClient = {
     id: clientId,
     response,
   };
+
+  request.session.id = clientId;
 
   clients.push(newClient);
 
@@ -76,7 +78,7 @@ async function removeItem(request, response, next) {
     if (initiative.track.length === 0) {
       initiative.current = null;
     }
-    response.json(item);
+    response.json(item).end();
     return sendEventsToAll(initiative);
   }
 }
@@ -91,7 +93,7 @@ async function nextTurn(request, response, next) {
     initiative.current = initiative.track[nextTurn].id;
   }
 
-  response.status(200);
+  response.status(200).end();
 
   return sendEventsToAll(initiative);
 }
@@ -112,8 +114,7 @@ async function sortItems(request, response, next) {
 
   initiative.current = initiative.track[0]?.id || null;
 
-  response.status(200);
-
+  response.status(200).end();
   return sendEventsToAll(initiative);
 }
 
