@@ -1,31 +1,35 @@
-import React, { useEffect, useState } from "react";
-import InitiativeItem from "../models/InitiativeItem";
+import React, { useEffect, useState } from 'react';
+import InitiativeItem from '../models/InitiativeItem';
+
+const baseURL = 'localhost:3000';
 
 interface ItemListenerProps<T> {
-  children: (data: T) => React.ReactNode
+  children: (data: T) => React.ReactNode;
 }
 
 const ItemListener: React.FC<ItemListenerProps<InitiativeItem[]>> = ({ children }) => {
+  // const [data, setData] = useState<InitiativeItem[]>([]);
+  // const [isListening, setIsListening] = useState(false);
 
-  const [data, setData] = useState<InitiativeItem[]>([]);
-  const [isListening, setIsListening] = useState(false);
+  const [facts, setFacts] = useState([]);
+  const [listening, setListening] = useState(false);
 
   useEffect(() => {
-    if (!isListening) {
-      const events = new EventSource('/api/initiative');
+    if (!listening) {
+      const events = new EventSource('http://localhost:3000/api/initiative/listener');
 
-      events.onmessage = (event) => {
+      events.onmessage = event => {
+        console.log(event.data);
         const parsedData = JSON.parse(event.data);
 
-        setData(parsedData);
+        setFacts(facts => facts.concat(parsedData));
       };
 
-      setIsListening(true);
+      setListening(true);
     }
-  }, [isListening, data]);
+  }, [listening, facts]);
 
+  return <React.Fragment>{children(facts)}</React.Fragment>;
+};
 
-  return <React.Fragment>{children(data)}</React.Fragment>
-}
-
-export default ItemListener
+export default ItemListener;

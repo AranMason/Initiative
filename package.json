@@ -17,7 +17,7 @@
     "typescript": "^3.9.10"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --env=development --watch",
     "eject": "reactnpm run -scripts eject",
     "lint": "eslint src/**"
   },

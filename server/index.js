@@ -10,14 +10,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/status', (request, response) => response.json({ clients: clients.length }));
 
-const PORT = 4000;
+const PORT = 3000;
 
 let clients = [];
-let initiative = [];
+let facts = [];
 
 app.listen(PORT, () => {
   console.log(`Facts Events service listening at http://localhost:${PORT}`);
 });
+
+// ...
 
 function eventsHandler(request, response, next) {
   const headers = {
@@ -27,7 +29,7 @@ function eventsHandler(request, response, next) {
   };
   response.writeHead(200, headers);
 
-  const data = `data: ${JSON.stringify(initiative)}\n\n`;
+  const data = `data: ${JSON.stringify(facts)}\n\n`;
 
   response.write(data);
 
@@ -50,15 +52,18 @@ app.get('/events', eventsHandler);
 
 // ...
 
-function sendEventsToAll(initiativeTrack) {
-  clients.forEach(client => client.response.write(JSON.stringify(initiativeTrack)));
+function sendEventsToAll(newFact) {
+  console.log('Got Fact: ', newFact);
+  clients.forEach(client => client.response.write(`data: ${JSON.stringify(newFact)}\n\n`));
 }
 
-async function addTractionObject(request, respsonse, next) {
+async function addMember(request, respsonse, next) {
   const newFact = request.body;
-  initiative.push(newFact);
+  facts.push(newFact);
   respsonse.json(newFact);
-  return sendEventsToAll(initiative);
+  return sendEventsToAll(newFact);
 }
 
-app.post('/initative', addTractionObject);
+app.post('/member', addMember);
+
+app.use('/api/initiative', require('./initiative/inititive'));
