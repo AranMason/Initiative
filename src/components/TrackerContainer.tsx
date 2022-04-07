@@ -1,6 +1,7 @@
 import React from 'react';
 import useInitiativeTracker from '../hooks/useInititativeTracker';
 import AddItemForm from './AddIItemForm';
+import InitiativeItem from './InitiativeItem';
 import ItemListener from './ItemListener';
 
 const TrackerContainer: React.FC = () => {
@@ -8,41 +9,44 @@ const TrackerContainer: React.FC = () => {
 
   return (
     <React.Fragment>
-      <ItemListener>
-        {tracker => {
-          if ((tracker?.track?.length || 0) === 0) return <div>No Items found</div>;
+      <div className="tracker-container layout-flex-column flex-gap-m">
+        <ItemListener>
+          {tracker => {
+            if ((tracker?.track?.length || 0) === 0) return 'Empty';
 
-          return (
-            <ul>
-              {tracker.track.map(item => {
-                return (
-                  <li key={item.id}>
-                    {item.name} - {item.value} {item.id === tracker.current ? ' - CURRENT TURN' : ''}
-                    <button type="button" onClick={() => removeItem(item.id)}>
-                      Delete
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          );
-        }}
-      </ItemListener>
-      <AddItemForm></AddItemForm>
-      <button
-        type="button"
-        onClick={() => {
-          nextTurn();
-        }}
-      >
-        Next
-      </button>
-      <button type="button" placeholder="Name" onClick={() => sort()}>
-        Sort
-      </button>
-      <button type="button" placeholder="Initiative" onClick={() => clear()}>
-        Clear
-      </button>
+            return tracker.track.map(item => {
+              return (
+                <InitiativeItem
+                  key={item.id}
+                  name={item.name}
+                  initiative={item.value}
+                  isCurrentTurn={item.id === tracker.current}
+                  onDelete={() => removeItem(item.id)}
+                ></InitiativeItem>
+              );
+            });
+          }}
+        </ItemListener>
+      </div>
+
+      <AddItemForm />
+
+      <div className="layout-flex-row flex-gap-m">
+        <button
+          type="button"
+          onClick={() => {
+            nextTurn();
+          }}
+        >
+          Next
+        </button>
+        <button type="button" placeholder="Name" onClick={() => sort()}>
+          Sort
+        </button>
+        <button type="button" placeholder="Initiative" onClick={() => clear()}>
+          Clear
+        </button>
+      </div>
     </React.Fragment>
   );
 };

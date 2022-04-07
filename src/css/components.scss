@@ -1,4 +1,5 @@
 @import './colours.scss';
+@import './layout_grid.scss';
 
 html,
 body,
@@ -29,7 +30,6 @@ div {
   margin: 0px;
   padding: 0px;
   display: flex;
-  background-color: var(--background);
 }
 
 section {
@@ -47,18 +47,21 @@ span {
 }
 
 header {
-  background-color: var(--primary);
-  width: 100%;
+  font-size: 1.5rem;
+  background-color: $colour-primary;
+  color: var(--background);
+  padding: $padding-l 0 $padding-l $padding-xl;
 }
 
 article {
   flex: 1;
+  padding: $padding-3xl;
 }
 
 footer {
   background-color: var(--dark);
   color: var(--background);
-  width: 100%;
+  padding: $padding-l 0 $padding-l $padding-xl;
 }
 
 h1,
@@ -68,8 +71,27 @@ h4,
 h5,
 h6 {
   font-family: 'Noto Sans JP', sans-serif;
-  color: var(--secondary);
+  color: $colour-secondary;
   border-bottom: thin;
   text-decoration: underline;
   text-decoration-color: var(--highlight);
+}
+
+button {
+  font-size: 1.2rem;
+  background-color: var(--background);
+  border: $padding-xs solid var(--dark);
+
+  padding: $padding-m $padding-ml;
+  border-radius: $padding-ml;
+  height: fit-content;
+
+  &:hover {
+    background-color: $button-hover-colour;
+  }
+}
+
+input {
+  height: $padding-3xl;
+  font-size: 1.2rem;
 }

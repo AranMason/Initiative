@@ -9,8 +9,8 @@ const App: React.FC = () => {
       {data => {
         return (
           <React.Fragment>
-            <header>Iniative Tracker</header>
-            <article>
+            <header>Initiative Tracker</header>
+            <article className="layout-flex-column flex-gap-m">
               <TrackerContainer />
             </article>
             <footer>Created by Aran Mason</footer>

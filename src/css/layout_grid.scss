@@ -1,15 +1,32 @@
+@import './colours.scss';
+
 $base-size: 5px;
 
+$padding-xs: 1px;
+$padding-s: 2px;
+$padding-m: $base-size;
+$padding-ml: 2 * $base-size;
+$padding-l: 3 * $base-size;
+$padding-xl: 4 * $base-size;
+$padding-2xl: 5 * $base-size;
+$padding-3xl: 6 * $base-size;
+
 $size-list: (
+  zero: 0,
   xs: 1px,
   s: 2px,
   m: $base-size,
   ml: 2 * $base-size,
   l: 3 * $base-size,
-  xl: 4 * $base-size
+  xl: 4 * $base-size,
+  auto: auto,
 );
 
 @each $name, $size in $size-list {
+  .margin-#{$name} {
+    margin: $size;
+  }
+
   .gap-#{$name} {
     margin-bottom: $size;
   }
@@ -25,4 +42,47 @@ $size-list: (
   .space-pre-#{$name} {
     margin-left: $size;
   }
+
+  .flex-gap-#{$name} {
+    gap: $size;
+  }
+
+  .padding-#{$name} {
+    padding: $size;
+  }
+}
+
+//Flex layouts
+
+.layout-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.layout-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.tracker-container {
+  min-height: 400px;
+  margin: $padding-3xl 0;
+  width: auto;
+  background-color: $tracker-background;
+  justify-content: center;
+  align-items: center;
+  border-radius: $padding-m;
+}
+
+.initiative-item-container {
+  width: 100%;
+}
+
+.initiative-item {
+  width: 100%;
+  background-color: var(--background);
+  border-radius: $padding-m;
+  margin: 0 $padding-m;
+  align-items: center;
+  height: 50px;
 }
