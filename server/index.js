@@ -16,10 +16,10 @@ app.listen(PORT, () => {
   console.log(`Facts Events service listening at http://localhost:${PORT}`);
 });
 
+app.use('/api', require('./api'));
+
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname, '/index.html'));
+// });
+
 app.use(express.static(__dirname + '/public'));
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'));
-});
-
-app.use('/api/initiative', require('./initiative/inititive'));
