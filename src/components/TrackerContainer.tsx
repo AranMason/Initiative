@@ -4,7 +4,7 @@ import AddItemForm from './AddIItemForm';
 import ItemListener from './ItemListener';
 
 const TrackerContainer: React.FC = () => {
-  const { nextTurn, removeItem } = useInitiativeTracker();
+  const { nextTurn, removeItem, sort, clear } = useInitiativeTracker();
 
   return (
     <React.Fragment>
@@ -36,6 +36,12 @@ const TrackerContainer: React.FC = () => {
         }}
       >
         Next
+      </button>
+      <button type="button" onClick={() => sort()}>
+        Sort
+      </button>
+      <button type="button" onClick={() => clear()}>
+        Clear
       </button>
     </React.Fragment>
   );

@@ -10,7 +10,11 @@ const AddItemForm: React.FC = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
 
+    if (!name || !initiative) return;
+
     addItem({ name, value: parseInt(initiative) });
+    setName('');
+    setInitiative('');
   };
 
   return (

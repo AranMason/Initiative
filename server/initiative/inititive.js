@@ -2,11 +2,13 @@ const { v4: uuidv4 } = require('uuid');
 var express = require('express'),
   router = express.Router();
 
-let clients = [];
-let initiative = {
+const initialState = {
   current: null,
   track: [],
 };
+
+let clients = [];
+let initiative = { ...initialState };
 
 function sendEventsToAll(list) {
   // console.log('Got Fact: ', newFact);
@@ -91,6 +93,39 @@ async function nextTurn(request, response, next) {
   return sendEventsToAll(initiative);
 }
 
+async function sortItems(request, response, next) {
+  function getValue(item) {
+    return item.value + (item.isPlayer ? 0.1 : 0);
+  }
+
+  if (initiative.track.length === 0) {
+    response.json({
+      isSuccessful: false,
+    });
+    return;
+  }
+
+  initiative.track = initiative.track.sort((a, b) => {
+    return getValue(b) - getValue(a);
+  });
+
+  initiative.current = initiative.track[0]?.id || null;
+
+  response.json({
+    isSuccessful: true,
+  });
+
+  return sendEventsToAll(initiative);
+}
+
+async function clear(request, response, next) {
+  initiative = { current: null, track: [] };
+  response.json({
+    isSuccessful: true,
+  });
+  return sendEventsToAll(initiative);
+}
+
 router.get('/listener', eventsHandler);
 
 router.post('/item', addItem);
@@ -98,6 +133,10 @@ router.post('/item', addItem);
 router.delete('/item', removeItem);
 
 router.patch('/next', nextTurn);
+
+router.post('/sort', sortItems);
+
+router.delete('/clear', clear);
 
 //
 

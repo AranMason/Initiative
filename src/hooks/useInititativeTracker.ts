@@ -11,6 +11,8 @@ interface InitiativeTrackerControls {
   addItem: (data: AddItemData) => Promise<void>;
   removeItem: (id: string) => Promise<void>;
   nextTurn: () => Promise<void>;
+  sort: () => Promise<void>;
+  clear: () => Promise<void>;
 }
 const useInitiativeTracker = (): InitiativeTrackerControls => {
 
@@ -49,10 +51,25 @@ const useInitiativeTracker = (): InitiativeTrackerControls => {
     })
   }
 
+
+  const sort = async () => {
+    await fetch(`${baseURL}/api/initiative/sort`, {
+      method: "post"
+    })
+  }
+
+  const clear = async () => {
+    await fetch(`${baseURL}/api/initiative/clear`, {
+      method: "DELETE"
+    })
+  }
+
   return {
     addItem,
     removeItem,
-    nextTurn
+    nextTurn,
+    sort,
+    clear
   }
 
 }
