@@ -85,4 +85,9 @@ $size-list: (
   margin: 0 $padding-m;
   align-items: center;
   height: 50px;
+
+  &.is-current-player {
+    font-weight: bold;
+    background-color: lightpink;
+  }
 }

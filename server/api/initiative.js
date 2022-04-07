@@ -62,10 +62,20 @@ async function addItem(request, respsonse, next) {
 }
 
 async function removeItem(request, response, next) {
-  const item = initiative.track.find(i => i.id === request.body.id);
+  const itemIndex = initiative.track.findIndex(i => i.id === request.body.id);
+  const item = initiative.track[itemIndex];
   if (!item) response.status(500);
   else {
+    if (item.id === initiative.current) {
+      const newCurrentIndex = (itemIndex + 1) % initiative.track.length;
+      initiative.current = initiative.track[newCurrentIndex]?.id || null;
+    }
+
     initiative.track = initiative.track.filter(i => i.id !== item.id);
+
+    if (initiative.track.length === 0) {
+      initiative.current = null;
+    }
     response.json(item);
     return sendEventsToAll(initiative);
   }

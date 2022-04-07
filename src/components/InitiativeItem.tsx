@@ -10,7 +10,7 @@ interface InitiativeItemProps {
 const InitiativeItem: React.FC<InitiativeItemProps> = ({ name, initiative, onDelete, isCurrentTurn }) => {
   return (
     <div className="initiative-item-container layout-flex-row">
-      <div className="layout-flex-row initiative-item padding-ml">
+      <div className={'layout-flex-row initiative-item padding-ml' + (isCurrentTurn ? ' is-current-player' : '')}>
         <h3 className="margin-zero space-auto">{name}</h3>
         <span className="space-pre-auto space-l">{initiative}</span>
         <button type="button" onClick={onDelete}>
