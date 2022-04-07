@@ -3,33 +3,40 @@ import InitiativeItem from '../models/InitiativeItem';
 
 const baseURL = 'localhost:3000';
 
+interface APIDataModel {
+  current?: string;
+  track: InitiativeItem[];
+}
+
 interface ItemListenerProps<T> {
   children: (data: T) => React.ReactNode;
 }
 
-const ItemListener: React.FC<ItemListenerProps<InitiativeItem[]>> = ({ children }) => {
+const ItemListener: React.FC<ItemListenerProps<APIDataModel>> = ({ children }) => {
   // const [data, setData] = useState<InitiativeItem[]>([]);
   // const [isListening, setIsListening] = useState(false);
 
-  const [facts, setFacts] = useState([]);
-  const [listening, setListening] = useState(false);
+  const [data, setData] = useState<APIDataModel>({
+    track: [],
+  });
+  const [isListening, setListening] = useState(false);
 
   useEffect(() => {
-    if (!listening) {
+    if (!isListening) {
       const events = new EventSource('http://localhost:3000/api/initiative/listener');
 
       events.onmessage = event => {
         console.log(event.data);
         const parsedData = JSON.parse(event.data);
 
-        setFacts(facts => facts.concat(parsedData));
+        setData(parsedData);
       };
 
       setListening(true);
     }
-  }, [listening, facts]);
+  }, [isListening, data]);
 
-  return <React.Fragment>{children(facts)}</React.Fragment>;
+  return <React.Fragment>{children(data)}</React.Fragment>;
 };
 
 export default ItemListener;

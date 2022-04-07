@@ -1,5 +1,6 @@
 export default interface InitiativeItem {
+  id: string;
   name: string;
-  inititiveValue: number;
+  value: number;
   isPlayer?: boolean
 }

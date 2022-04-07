@@ -2,12 +2,15 @@ const { v4: uuidv4 } = require('uuid');
 var express = require('express'),
   router = express.Router();
 
-const clients = [];
-const initiativeTrack = [];
+let clients = [];
+let initiative = {
+  current: null,
+  track: [],
+};
 
 function sendEventsToAll(list) {
   // console.log('Got Fact: ', newFact);
-  clients.forEach(client => client.response.write(`data: ${JSON.stringify(initiativeTrack)}\n\n`));
+  clients.forEach(client => client.response.write(`data: ${JSON.stringify(initiative)}\n\n`));
 }
 
 // ---------------------
@@ -19,7 +22,7 @@ function eventsHandler(request, response, next) {
   };
   response.writeHead(200, headers);
 
-  const data = `data: ${JSON.stringify(initiativeTrack)}\n\n`;
+  const data = `data: ${JSON.stringify(initiative)}\n\n`;
 
   response.write(data);
 
@@ -49,20 +52,43 @@ async function addItem(request, respsonse, next) {
 
   console.log('Added item: ', newItem);
 
-  initiativeTrack.push(newItem);
+  if (!initiative.current) {
+    initiative.current = id;
+  }
+
+  initiative.track.push(newItem);
   respsonse.json(newItem);
-  return sendEventsToAll(initiativeTrack);
+  return sendEventsToAll(initiative);
 }
 
 async function removeItem(request, response, next) {
-  const item = initiativeTrack.find(i => i.id === request.body.id);
+  const item = initiative.track.find(i => i.id === request.body.id);
   if (!item) response.status(500);
   else {
     console.log('Removed Item: ', item);
-    initiativeTrack = initiativeTrack.filter(i => i.id !== item.id);
+    initiative.track = initiative.track.filter(i => i.id !== item.id);
     response.json(item);
-    return sendEventsToAll(initiativeTrack);
+    return sendEventsToAll(initiative);
   }
+}
+
+async function nextTurn(request, response, next) {
+  if (initiative.track.length <= 0) {
+    initiative.current = null;
+  } else {
+    const currentTurn = initiative.track.findIndex(i => i.id === initiative.current);
+    const nextTurn = (currentTurn + 1) % initiative.track.length;
+
+    console.log('New Turn: ', currentTurn, nextTurn);
+
+    initiative.current = initiative.track[nextTurn].id;
+  }
+
+  response.json({
+    isSuccessful: true,
+  });
+
+  return sendEventsToAll(initiative);
 }
 
 router.get('/listener', eventsHandler);
@@ -70,6 +96,9 @@ router.get('/listener', eventsHandler);
 router.post('/item', addItem);
 
 router.delete('/item', removeItem);
+
+router.patch('/next', nextTurn);
+
 //
 
 module.exports = router;
