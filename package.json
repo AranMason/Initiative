@@ -16,10 +16,10 @@
     "typescript": "^3.9.10"
   },
   "scripts": {
-    "build": "webpack --env=production",
+    "build": "webpack --env=development",
+    "build-prod": "webpack --env=production",
     "watch": "webpack --env=development --watch",
     "share": "lt --port 3000",
-    "eject": "reactnpm run -scripts eject",
     "lint": "eslint src/**"
   },
   "eslintConfig": {
