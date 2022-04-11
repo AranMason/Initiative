@@ -14,6 +14,7 @@ const ItemListener: React.FC<ItemListenerProps<APIDataModel>> = ({ children }) =
     const [data, setData] = useState<APIDataModel>({
         track: [],
     });
+    const [hasError, setHasError] = useState(false);
     const [isListening, setListening] = useState(false);
 
     useEffect(() => {
@@ -22,15 +23,28 @@ const ItemListener: React.FC<ItemListenerProps<APIDataModel>> = ({ children }) =
 
             events.onmessage = event => {
                 const parsedData = JSON.parse(event.data);
-
+                setHasError(false);
                 setData(parsedData);
+            };
+
+            events.onerror = () => {
+                setHasError(true);
+            };
+
+            events.onopen = () => {
+                setHasError(false);
             };
 
             setListening(true);
         }
     }, [isListening, data]);
 
-    return <React.Fragment>{children(data)}</React.Fragment>;
+    return (
+        <React.Fragment>
+            {hasError && <div>An error has occured</div>}
+            {children(data)}
+        </React.Fragment>
+    );
 };
 
 export default ItemListener;

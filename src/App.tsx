@@ -4,21 +4,15 @@ import ItemListener from './components/ItemListener';
 import TrackerContainer from './components/TrackerContainer';
 
 const App: React.FC = () => {
-  return (
-    <ItemListener>
-      {data => {
-        return (
-          <React.Fragment>
+    return (
+        <React.Fragment>
             <header>Initiative Tracker</header>
             <article className="layout-flex-column flex-gap-m">
-              <TrackerContainer />
+                <TrackerContainer />
             </article>
             <footer>Created by Aran Mason</footer>
-          </React.Fragment>
-        );
-      }}
-    </ItemListener>
-  );
+        </React.Fragment>
+    );
 };
 
 export default App;
