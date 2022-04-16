@@ -4,16 +4,6 @@ import { RequestHandler, Router } from 'express';
 
 const router = Router();
 
-declare global {
-    namespace Express {
-        interface Session {
-            data: {
-                id: string;
-            };
-        }
-    }
-}
-
 let clients = [];
 
 function sendEventsToAll() {
@@ -35,18 +25,22 @@ const eventsHandler: RequestHandler = async (request, response, next) => {
 
     response.write(data);
 
-    const clientId = request.session?.id || uuidv4();
+    console.log(request.session);
+    const clientId = request.session?.clientId || uuidv4();
 
     const newClient = {
         id: clientId,
         response,
     };
 
-    request.session.data.id = clientId;
+    console.log(request.session.clientId);
+    request.session.clientId = clientId;
 
     clients.push(newClient);
+    console.log('Connected: ', clientId);
 
     request.on('close', () => {
+        console.log('Closed: ', clientId);
         clients = clients.filter(client => client.id !== clientId);
     });
 };

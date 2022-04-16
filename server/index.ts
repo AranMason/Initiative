@@ -8,6 +8,12 @@ import api from './src/api/index';
 const app = express();
 const port = 3000;
 
+declare module 'express-session' {
+    interface SessionData {
+        clientId: string;
+    }
+}
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
